@@ -54,8 +54,13 @@ class Endpoint {
 	 */
 	public function authenticate() {
 		$creds = array();
-		$creds['user_login'] = $_SERVER['HTTP_USER'];
-		$creds['user_password'] = $_SERVER['HTTP_PASSWORD'];
+		if(file_exists('./../.secret')){
+			$secret = file_get_contents('.secret');
+		}else{
+			$secret = 'Youshoulduseapasswordhere';
+		}
+		$creds['user_login'] = openssl_decrypt($_SERVER['HTTP_USER'], "AES-128-ECB", $secret);
+		$creds['user_password'] = openssl_decrypt($_SERVER['HTTP_PASSWORD'], "AES-128-ECB", $secret);
 		$creds['remember'] = false;
 		$user = wp_signon($creds, false);
 		if(is_wp_error($user)) {
