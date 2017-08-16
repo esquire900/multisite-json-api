@@ -55,7 +55,7 @@ class Endpoint {
 	public function authenticate() {
 		$creds = array();
 		if(file_exists('./../.secret')){
-			$secret = file_get_contents('.secret');
+			$secret = file_get_contents('./../.secret');
 		}else{
 			$secret = 'Youshoulduseapasswordhere';
 		}
